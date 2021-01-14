@@ -17,6 +17,9 @@ cp ${PWD}/default/hostapd /etc/default/hostapd
 cp ${PWD}/etc/network/interfaces /etc/network/interfaces
 cp ${PWD}/etc/rc.local /etc/rc.local
 
+# Bring wlan0 up
+ip link set wlan0 up
+
 # Enable services
 systemctl unmask hostapd
 systemctl enable hostapd
