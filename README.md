@@ -10,20 +10,13 @@ SSL/TLS master keys automatically applied for decryption.
 ## Installation
 
 This was tested using a [Raspberry Pi 3 Model B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)
-running [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/).
+running [raspios_lite_armhf-2020-12-02](https://downloads.raspberrypi.org/raspios_lite_armhf/images/).
 
-### Python
-
-Installing mitmproxy v4 requires Python 3.6 (or higher) and pip3. This version
-is not available currently in the Raspbian repository so it will have to be
-installed manually. 
+### Pip and mitmproxy
 
 In this git repository the
 [install-python-mitmproxy.sh](/install-python-mitmproxy.sh)
-script will download and compile version 3.7.2 
-of Python and install it to `$HOME/.local`. Then this script will add this
-version of Python to the users path and install mitmproxy using pip3. It will
-also download the packages necessary to build Python using apt. 
+script will install pip and mitmproxy on your Raspberry Pi. 
 
 ## Network Configuration
 
@@ -45,25 +38,9 @@ configured with a static IP address of `192.168.1.1/24` and will serve IP
 addresses via DHCP from the range 192.168.1.50-192.168.1.100. This can be
 modified in the file [/etc/dnsmasq.conf](/etc/dnsmasq.conf)
 
-## CloudShark API Token
+## Capturing and dump
 
-An API token is required to upload captures and keylog files to CloudShark
-using the [upload api method](https://support.cloudshark.io/api/upload.html).
-
-CloudShark users can view and create API tokens in the Preferences menu at the
-top of the page after logging in. This can be added as an environment variable
-by running:
-
-```
-echo "export CLOUDSHARK_API=<Replace with API Token>" >> ~/.bashrc
-```
-
-Now captures can be automatically be uploaded to CloudShark using the API after
-capturing the traffic.
-
-## Capturing and uploading
-
-The [capture-and-upload.sh](/capture-and-upload.sh) starts by configuring the
+The [capture-and-dump.sh](/capture-and-dump.sh) starts by configuring the
 firewall to direct HTTP & HTTPS traffic to our mitmproxy acting as a
 [transparent proxy](https://docs.mitmproxy.org/stable/concepts-modes/#transparent-proxy).
 
@@ -81,13 +58,4 @@ information on the mitmproxy certificate authority and how it can be
 configured.
 
 Once the script is killed using `Ctrl+c` the proxy and network capture will be
-stopped and the capture file will be uploaded to CloudShark with a keylog file
-applied to decrypt the SSL/TLS traffic that was captures. 
-[Here is an example](https://www.cloudshark.org/captures/662f862bb6d4) of a
-capture file that was taking using our Pi-in-the-Middle! 
-
-## CS Enterprise
-
-Customers with their own instance of CS Enterprise can update the
-`cloudshark_url` in the [capture-and-upload.sh](/capture-and-upload.sh) script
-to upload captures to their own private instance of CloudShark.
+stopped and the capture file will be dumped. 
