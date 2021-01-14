@@ -21,26 +21,12 @@ remove_firewall_rules () {
 }
 
 # This will upload the capture file and keylog to CloudShark
-cloudshark_upload () {
-  cloudshark_url="https://www.cloudshark.org"
-  api_token=${CLOUDSHARK_API}
-
-  echo -e "Uploading to ${cloudshark_url}"
-  response=$(curl -s -F file="@${capture_file}" -F keylog="@${keylog_file}" ${cloudshark_url}/api/v1/${api_token}/upload)
-
-  json_id=$(echo $response | python -m json.tool | grep id)
-
-  if [ "$json_id" != "" ]; then
-    # find the CloudShark ID for this session
-    id=`echo $json_id | sed 's/:/ /1' | awk -F" " '{ print $2 }'| sed 's/\"//g'`
-
-    # show a URL using the capture session in CloudShark
-    echo -e "\nA new CloudShark session has been created at:"
-    echo "${cloudshark_url}/captures/$id"
-  else
-    echo -e "\nCould not upload capture to CloudShark:"
-    echo $response | python -m json.tool
-  fi
+create_dump () {
+  dump_path=dump_$(date +%s)
+  echo -e "Dumping to $dump_path"
+  mkdir $dump_path
+  cp $capture_file $dump_path
+  cp $keylog_file $dump_path
 }
 
 # Setup
@@ -49,7 +35,7 @@ add_firewall_rules
 # Post Capture Steps
 post_capture () {
   remove_firewall_rules
-  cloudshark_upload
+  create_dump
 }
 
 echo "Capturing traffic to: ${capture_file}"
