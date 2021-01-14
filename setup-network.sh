@@ -18,12 +18,15 @@ cp ${PWD}/etc/network/interfaces /etc/network/interfaces
 cp ${PWD}/etc/rc.local /etc/rc.local
 
 # Bring wlan0 up
+rfkill unblock wifi
 ip link set wlan0 up
 
 # Enable services
 systemctl unmask hostapd
 systemctl enable hostapd
 systemctl enable dnsmasq
+
+iptables-save > /etc/iptables.up.rules.bak
 
 # Setup iptables
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE  
