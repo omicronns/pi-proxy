@@ -1,7 +1,9 @@
 #!/bin/bash
 
-capture_file=$(mktemp /tmp/capture.XXXXXXXX)
-keylog_file=$(mktemp /tmp/keylog.XXXXXXXX)
+dump_ts=$(date +%s)
+
+capture_file=/tmp/capture_$dump_ts
+keylog_file=/tmp/keylog_$dump_ts
 
 capture_filter="port 443 or port 80"
 
@@ -22,7 +24,7 @@ remove_firewall_rules () {
 
 # This will create traffic and keys dump
 create_dump () {
-  dump_path=dump_$(date +%s)
+  dump_path=dump_$dump_ts
   echo -e "Dumping to $dump_path"
   mkdir $dump_path
   cp $capture_file $dump_path
@@ -40,8 +42,9 @@ post_capture () {
 
 echo "Capturing traffic to: ${capture_file}"
 echo "Logging TLS keys to: ${keylog_file}"
+touch ${keylog_file}
 
 # Capture and dump
 trap 'kill %1; kill %2; post_capture' SIGINT; \
-  sudo tcpdump -i eth0 -w ${capture_file} ${capture_filter} & \
+  sudo tcpdump -i wlan0 -w ${capture_file} ${capture_filter} & \
   MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmweb -m transparent --web-host 0.0.0.0
