@@ -20,7 +20,7 @@ remove_firewall_rules () {
   echo "Done"
 }
 
-# This will upload the capture file and keylog to CloudShark
+# This will create traffic and keys dump
 create_dump () {
   dump_path=dump_$(date +%s)
   echo -e "Dumping to $dump_path"
@@ -41,7 +41,7 @@ post_capture () {
 echo "Capturing traffic to: ${capture_file}"
 echo "Logging TLS keys to: ${keylog_file}"
 
-# Capture and upload to CloudShark
+# Capture and dump
 trap 'kill %1; kill %2; post_capture' SIGINT; \
   sudo tcpdump -i eth0 -w ${capture_file} ${capture_filter} & \
   MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmweb -m transparent --web-host 0.0.0.0
