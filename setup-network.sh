@@ -22,9 +22,12 @@ bak_cp ${PWD}/etc/sysctl.conf /etc/sysctl.conf
 bak_cp ${PWD}/default/hostapd /etc/default/hostapd
 
 # Enable services
+systemctl stop systemd-resolved
+systemctl mask systemd-resolved
 systemctl unmask hostapd
 systemctl enable hostapd
 systemctl enable dnsmasq
+systemctl enable iptables
 
 iptables-save > /etc/iptables/iptables.rules.bak
 
