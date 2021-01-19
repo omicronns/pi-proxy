@@ -4,4 +4,4 @@
 set -e
 
 # Install requirements
-sudo pacman -Sy mitmproxy
+sudo pacman -Syu mitmproxy
