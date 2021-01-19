@@ -4,7 +4,4 @@
 set -e
 
 # Install requirements
-sudo pacman -Sy python-pip
-
-# Install mitmproxy
-pip3 install mitmproxy
+sudo pacman -Sy mitmproxy
