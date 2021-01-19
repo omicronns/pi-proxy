@@ -44,4 +44,4 @@ echo "Logging TLS keys to: ${keylog_file}"
 # Capture and upload to CloudShark
 trap 'kill %1; kill %2; post_capture' SIGINT; \
   sudo tcpdump -i eth0 -w ${capture_file} ${capture_filter} & \
-  MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmdump -m transparent --showhost --no-http2
+  MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmweb -m transparent --web-host 0.0.0.0
