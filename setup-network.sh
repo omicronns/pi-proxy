@@ -4,7 +4,7 @@
 set -e
 
 # Install packages
-pacman -Syu dnsmasq hostapd tcpdump
+pacman -Sy dnsmasq hostapd tcpdump
 
 # Configure
 
