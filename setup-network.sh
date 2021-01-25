@@ -18,8 +18,8 @@ bak_cp() {
 bak_cp ${PWD}/etc/dhcpcd.conf /etc/dhcpcd.conf
 bak_cp ${PWD}/etc/dnsmasq.conf /etc/dnsmasq.conf
 bak_cp ${PWD}/etc/hostapd.conf /etc/hostapd/hostapd.conf
-bak_cp ${PWD}/etc/sysctl.conf /etc/sysctl.conf
 bak_cp ${PWD}/default/hostapd /etc/default/hostapd
+bak_cp ${PWD}/etc/sysctl.d/99-sysctl.conf /etc/sysctl.d/99-sysctl.conf
 
 # Enable services
 systemctl stop systemd-resolved
