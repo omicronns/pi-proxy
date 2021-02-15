@@ -33,7 +33,7 @@ network configuration.
 
 By default the Raspberry Pi will act as a wireless AP for the `pi in the
 middle` network and this is also the WPA pre-shared key. This can be configured
-in the [/etc/hostapd.conf](/etc/hostapd.conf) file. The `wlan0` will be
+in the [/etc/hostapd/hostapd.conf](/etc/hostapd.conf) file. The `wlan0` will be
 configured with a static IP address of `192.168.1.1/24` and will serve IP
 addresses via DHCP from the range 192.168.1.50-192.168.1.100. This can be
 modified in the file [/etc/dnsmasq.conf](/etc/dnsmasq.conf)
