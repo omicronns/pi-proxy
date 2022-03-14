@@ -5,9 +5,15 @@ It can spawn mitmproxy to perform man in the middle attack, or you can use just 
 
 # Usage
 
-First we need to setup needed packages and configure the device network.
+Raspberry PI 3 or 4 is required with Manjaro ARM OS.
+
+https://manjaro.org/download/#raspberry-pi-4-minimal
+
+Then clone this repository onto the device.
 
 ## Setup
+
+First we need to setup needed packages and configure the device network.
 
 ```
 sudo ./setup.sh apd|eth|clr
