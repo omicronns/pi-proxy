@@ -5,7 +5,7 @@ set -e
 
 # Install packages
 pacman -Syu --needed \
-    dnsmasq hostapd tcpdump
+    mitmproxy dnsmasq hostapd tcpdump
 
 # Configure
 
