@@ -7,7 +7,7 @@ It can spawn mitmproxy to perform man in the middle attack, or you can use just 
 
 Raspberry PI 3 or 4 is required with Manjaro ARM OS.
 
-https://manjaro.org/download/#raspberry-pi-4-minimal
+https://manjaro.org/downloads/arm/raspberry-pi-4/arm8-raspberry-pi-4-minimal/
 
 Then clone this repository onto the device.
 
