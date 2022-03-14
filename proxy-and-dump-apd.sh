@@ -44,7 +44,7 @@ echo "Capturing traffic to: ${capture_file}"
 echo "Logging TLS keys to: ${keylog_file}"
 touch ${keylog_file}
 
-# Capture and dump
+# Proxy and capture
 trap 'kill %1; kill %2; post_capture' SIGINT; \
-  sudo tcpdump -i eth0 -w ${capture_file} ${capture_filter} & \
+  sudo tcpdump -i wlan0 -w ${capture_file} ${capture_filter} & \
   MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmweb -m transparent --web-host 0.0.0.0

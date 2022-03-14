@@ -69,15 +69,18 @@ setup_clear() {
 }
 
 if [ "$1" = "apd" ]; then
+    echo "[I] Setting up proxy for wlan connected device"
     setup_common
     setup_apd_target
+    echo "[I] Please reboot to finish configuring the network."
 elif [ "$1" = "eth" ]; then
+    echo "[I] Setting up proxy for eth connected device"
     setup_common
     setup_eth_target
+    echo "[I] Please reboot to finish configuring the network."
 elif [ "$1" = "clr" ]; then
     setup_clear
+    echo "[I] Please reboot to finish configuring the network."
 else
     echo "[E] Unknown setup, choose one of: apd|eth|clr"
 fi
-
-echo "[I] Please reboot to finish configuring the network."
