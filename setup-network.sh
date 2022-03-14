@@ -4,38 +4,80 @@
 set -e
 
 # Install packages
-pacman -Sy dnsmasq hostapd tcpdump
+pacman -Syu --needed \
+    dnsmasq hostapd tcpdump
 
 # Configure
 
-bak_cp() {
-    _dir=$(dirname $2)
-    [ -e $_dir ] || mkdir -p $_dir
-    [ -e "$2" ] && cp $2 $2.bak
-    cp $1 $2
+bak() {
+    if [ ! -e $1.bak ]; then
+        cp $1 $1.bak
+    fi
 }
 
-bak_cp ${PWD}/etc/dhcpcd.conf /etc/dhcpcd.conf
-bak_cp ${PWD}/etc/dnsmasq.conf /etc/dnsmasq.conf
-bak_cp ${PWD}/etc/hostapd.conf /etc/hostapd/hostapd.conf
-bak_cp ${PWD}/default/hostapd /etc/default/hostapd
-bak_cp ${PWD}/etc/sysctl.d/99-sysctl.conf /etc/sysctl.d/99-sysctl.conf
+unbak() {
+    if [ -e $1.bak ]; then
+        cp $1.bak $1
+    fi
+}
 
-# Enable services
-systemctl stop systemd-resolved
-systemctl mask systemd-resolved
-systemctl unmask hostapd
-systemctl enable hostapd
-systemctl enable dnsmasq
-systemctl enable iptables
+setup_apd_target() {
+    cp config/apd_target/dhcpcd.conf /etc/dhcpcd.conf
+    cp config/apd_target/dnsmasq.conf /etc/dnsmasq.conf
+    cp config/apd_target/iptables.rules /etc/iptables/iptables.rules
 
-iptables-save > /etc/iptables/iptables.rules.bak
+    cp config/apd_target/hostapd.conf /etc/hostapd/hostapd.conf
+    cp config/apd_target/hostapd /etc/default/hostapd
 
-# Setup iptables
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE  
-iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT  
-iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+    systemctl unmask hostapd
+    systemctl enable hostapd
+}
 
-iptables-save > /etc/iptables/iptables.rules
+setup_eth_target() {
+    cp config/eth_target/dhcpcd.conf /etc/dhcpcd.conf
+    cp config/eth_target/dnsmasq.conf /etc/dnsmasq.conf
+    cp config/eth_target/iptables.rules /etc/iptables/iptables.rules
 
-echo "Please reboot to finish configuring the network."
+    systemctl disable hostapd
+    systemctl mask hostapd
+}
+
+setup_common() {
+    bak /etc/dhcpcd.conf
+
+    cp config/99-sysctl.conf /etc/sysctl.d/99-sysctl.conf
+
+    systemctl stop systemd-resolved
+    systemctl disable systemd-resolved
+    systemctl mask systemd-resolved
+
+    systemctl enable iptables
+    systemctl enable dnsmasq
+}
+
+setup_clear() {
+    systemctl disable hostapd
+    systemctl mask hostapd
+
+    systemctl disable iptables
+    systemctl disable dnsmasq
+
+    systemctl unmask systemd-resolved
+    systemctl enable systemd-resolved
+
+    unbak /etc/dhcpcd.conf
+}
+
+if [ "$1" = "apd" ]; then
+    setup_common
+    setup_apd_target
+elif [ "$1" = "eth" ]; then
+    setup_common
+    setup_eth_target
+elif [ "$1" = "clr" ]; then
+    setup_clear
+else
+    echo "[E] Unknown setup, choose one of: apd|eth|clr"
+fi
+
+echo "[I] Please reboot to finish configuring the network."
