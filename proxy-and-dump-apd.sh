@@ -2,6 +2,7 @@
 
 dump_ts=$(date +%s)
 
+tcpdump_filter=$1
 capture_file=/tmp/capture.pcap
 keylog_file=/tmp/ssl_keylog
 
@@ -44,5 +45,5 @@ touch ${keylog_file}
 
 # Proxy and capture
 trap 'kill %1; kill %2; post_capture' SIGINT; \
-  sudo tcpdump -i wlan0 -w ${capture_file} & \
+  sudo tcpdump -i wlan0 -w ${capture_file} ${tcpdump_filter} & \
   MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmweb -m transparent --web-host 0.0.0.0
