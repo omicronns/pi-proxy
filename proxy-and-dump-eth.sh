@@ -2,8 +2,8 @@
 
 dump_ts=$(date +%s)
 
-capture_file=/tmp/capture_$dump_ts
-keylog_file=/tmp/keylog_$dump_ts
+capture_file=/tmp/capture.pcap
+keylog_file=/tmp/ssl_keylog
 
 capture_filter="port 443 or port 80"
 
