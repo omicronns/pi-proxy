@@ -5,8 +5,6 @@ dump_ts=$(date +%s)
 capture_file=/tmp/capture.pcap
 keylog_file=/tmp/ssl_keylog
 
-capture_filter="port 443 or port 80"
-
 # These iptables rules will route traffic to the mitmproxy
 add_firewall_rules () {
   echo "Setting up firewall rules"
@@ -46,5 +44,5 @@ touch ${keylog_file}
 
 # Proxy and capture
 trap 'kill %1; kill %2; post_capture' SIGINT; \
-  sudo tcpdump -i wlan0 -w ${capture_file} ${capture_filter} & \
+  sudo tcpdump -i wlan0 -w ${capture_file} & \
   MITMPROXY_SSLKEYLOGFILE="${keylog_file}" mitmweb -m transparent --web-host 0.0.0.0
