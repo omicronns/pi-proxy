@@ -44,6 +44,7 @@ setup_eth_target() {
 
 setup_common() {
     bak /etc/dhcpcd.conf
+    bak /etc/iptables/iptables.rules
 
     cp config/99-sysctl.conf /etc/sysctl.d/99-sysctl.conf
 
@@ -66,6 +67,7 @@ setup_clear() {
     systemctl enable systemd-resolved
 
     unbak /etc/dhcpcd.conf
+    unbak /etc/iptables/iptables.rules
 }
 
 if [ "$1" = "apd" ]; then
