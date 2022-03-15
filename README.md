@@ -16,12 +16,12 @@ Then clone this repository onto the device.
 First we need to setup needed packages and configure the device network.
 
 ```
-sudo ./setup.sh apd|eth|clr
+sudo ./setup.sh wlan|eth|clr
 ```
 
 There are three options available:
 
-* `apd` - configure Raspberry to expose access point for the target device to connect, outside world connection is done via physical ethernet port
+* `wlan` - configure Raspberry to expose access point for the target device to connect, outside world connection is done via physical ethernet port
 * `eth` - configure Raspberry to connect to the internet via wlan interface, target device shall be connected via phical ethernet port
 * `clr` - clear the configuration, brings the device to usual operation prior to the setup (software installed during setup is not removed)
 
@@ -30,13 +30,13 @@ There are three options available:
 There is a script to configure capture and mitmproxy to intercept the traffic:
 
 ```
-sudo proxy-and-dump.sh apd|eth TCPDUMP_FILTER
+sudo proxy-and-dump.sh wlan|eth TCPDUMP_FILTER
 ```
 
 We can specify `TCPDUMP_FILTER` to only capture interesting traffic, eg.
 
 ```
-sudo proxy-and-dump.sh apd "host x.x.x.x"
+sudo proxy-and-dump.sh wlan "host x.x.x.x"
 ```
 
 to limit capture to packets only related with specific ip address. Filter must be enclosed in quotes.
@@ -45,7 +45,7 @@ to limit capture to packets only related with specific ip address. Filter must b
 
 If we don't want to use mitmproxy we can capture with only `tcpdump`.
 
-When configured as `apd`:
+When configured as `wlan`:
 
 ```
 sudo tcpdump -i wlan0 -w dump.pcap

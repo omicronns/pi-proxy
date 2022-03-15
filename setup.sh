@@ -21,13 +21,13 @@ unbak() {
     fi
 }
 
-setup_apd_target() {
-    cp config/apd_target/dhcpcd.conf /etc/dhcpcd.conf
-    cp config/apd_target/dnsmasq.conf /etc/dnsmasq.conf
-    cp config/apd_target/iptables.rules /etc/iptables/iptables.rules
+setup_wlan_target() {
+    cp config/wlan_target/dhcpcd.conf /etc/dhcpcd.conf
+    cp config/wlan_target/dnsmasq.conf /etc/dnsmasq.conf
+    cp config/wlan_target/iptables.rules /etc/iptables/iptables.rules
 
-    cp config/apd_target/hostapd.conf /etc/hostapd/hostapd.conf
-    cp config/apd_target/hostapd /etc/default/hostapd
+    cp config/wlan_target/hostapd.conf /etc/hostapd/hostapd.conf
+    cp config/wlan_target/hostapd /etc/default/hostapd
 
     systemctl unmask hostapd
     systemctl enable hostapd
@@ -70,10 +70,10 @@ setup_clear() {
     unbak /etc/iptables/iptables.rules
 }
 
-if [ "$1" = "apd" ]; then
+if [ "$1" = "wlan" ]; then
     echo "[I] Setting up proxy for wlan connected device"
     setup_common
-    setup_apd_target
+    setup_wlan_target
     echo "[I] Please reboot to finish configuring the network."
 elif [ "$1" = "eth" ]; then
     echo "[I] Setting up proxy for eth connected device"
@@ -84,5 +84,5 @@ elif [ "$1" = "clr" ]; then
     setup_clear
     echo "[I] Please reboot to finish configuring the network."
 else
-    echo "[E] Unknown setup, choose one of: apd|eth|clr"
+    echo "[E] Unknown setup, choose one of: wlan|eth|clr"
 fi

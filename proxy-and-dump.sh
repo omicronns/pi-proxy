@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ "$1" = "apd" ]; then
+if [ "$1" = "wlan" ]; then
     interface=$interface
 elif [ "$1" = "eth" ]; then
     interface=eth0
 else
-    echo "[E] Unknown mode, choose one of: apd|eth"
+    echo "[E] Unknown mode, choose one of: wlan|eth"
     exit
 fi
 
