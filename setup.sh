@@ -46,7 +46,7 @@ setup_common() {
     bak /etc/dhcpcd.conf
     bak /etc/iptables/iptables.rules
 
-    cp config/99-sysctl.conf /etc/sysctl.d/99-sysctl.conf
+    cp config/99-sysctl.conf /etc/sysctl.d/99-pi-proxy.conf
 
     systemctl stop systemd-resolved
     systemctl disable systemd-resolved
@@ -68,6 +68,7 @@ setup_clear() {
 
     unbak /etc/dhcpcd.conf
     unbak /etc/iptables/iptables.rules
+    rm /etc/sysctl.d/99-pi-proxy.conf
 }
 
 if [ "$1" = "wlan" ]; then
