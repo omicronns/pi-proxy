@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$1" = "wlan" ]; then
-    interface=$interface
+    interface=wlan0
 elif [ "$1" = "eth" ]; then
     interface=eth0
 else
